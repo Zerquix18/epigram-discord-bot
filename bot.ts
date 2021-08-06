@@ -36,5 +36,5 @@ function sendOutRandomEpigram() {
   });
 }
 
-bot.login('ODczMTkzODUyMTg0NDUzMTcy.YQ03JQ.OF1lvwbeILbhg7aEah1t-BpAgDE');
+bot.login(process.env.EPIGRAM_BOT_TOKEN);
 setInterval(sendOutRandomEpigram, 3600000); // every hr 
