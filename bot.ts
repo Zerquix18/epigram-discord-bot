@@ -1,5 +1,8 @@
 import * as fs from 'fs';
 import * as Discord from 'discord.js';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const epigramFile = fs.readFileSync('./epigrams.json');
 const epigrams = JSON.parse(epigramFile.toString()) as string[];
@@ -35,6 +38,8 @@ function sendOutRandomEpigram() {
     }
   });
 }
+
+console.log(process.env.EPIGRAM_BOT_TOKEN);
 
 bot.login(process.env.EPIGRAM_BOT_TOKEN);
 setInterval(sendOutRandomEpigram, 3600000); // every hr 
