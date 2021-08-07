@@ -44,7 +44,7 @@ bot.on('interactionCreate', async (interaction) => {
     const stmt = db.prepare("INSERT INTO channels VALUES (?)");
     stmt.run(channelId);
     stmt.finalize();
-    interaction.channel.send('Epigrams enabled for this channel');
+    interaction.reply('Epigrams enabled for this channel');
     return;
   }
   if (interaction.commandName === 'epigrams_disable') {
@@ -52,12 +52,12 @@ bot.on('interactionCreate', async (interaction) => {
     const stmt = db.prepare("DELETE FROM channels WHERE channel = ?");
     stmt.run(channelId);
     stmt.finalize();
-    interaction.channel.send('Epigrams disabled for this channel');
+    interaction.reply('Epigrams disabled for this channel');
     return;
   }
 
   if (interaction.commandName === 'epigram') {
-    interaction.channel.send(epigrams[Math.floor(Math.random() * epigrams.length)]);
+    interaction.reply(epigrams[Math.floor(Math.random() * epigrams.length)]);
   }
 
 });
