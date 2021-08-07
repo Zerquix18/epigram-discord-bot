@@ -32,26 +32,30 @@ bot.on('ready', async () => {
   }
 });
 
-bot.on('messageCreate', async (message) => {
-  if (message.content.startsWith('/epigrams_enable')) {
-    const { channelId } = message;
-    const stmt = db.prepare("INSERT INTO channels VALUES (?)");
-    stmt.run(channelId);
-    stmt.finalize();
-    message.channel.send('Epigrams enabled for this channel');
-    return;
-  }
-  if (message.content.startsWith('/epigrams_disable')) {
-    const { channelId } = message;
-    const stmt = db.prepare("DELETE FROM channels WHERE channel = ?");
-    stmt.run(channelId);
-    stmt.finalize();
-    message.channel.send('Epigrams disabled for this channel');
+bot.on('interactionCreate', async (interaction) => {
+  if (! interaction.isCommand() || ! interaction.channel) {
     return;
   }
 
-  if (message.content === '/epigram') {
-    message.channel.send(epigrams[Math.floor(Math.random() * epigrams.length)]);
+  if (interaction.commandName === 'epigrams_enable') {
+    const { channelId } = interaction;
+    const stmt = db.prepare("INSERT INTO channels VALUES (?)");
+    stmt.run(channelId);
+    stmt.finalize();
+    interaction.channel.send('Epigrams enabled for this channel');
+    return;
+  }
+  if (interaction.commandName === 'epigrams_disable') {
+    const { channelId } = interaction;
+    const stmt = db.prepare("DELETE FROM channels WHERE channel = ?");
+    stmt.run(channelId);
+    stmt.finalize();
+    interaction.channel.send('Epigrams disabled for this channel');
+    return;
+  }
+
+  if (interaction.commandName === 'epigram') {
+    interaction.channel.send(epigrams[Math.floor(Math.random() * epigrams.length)]);
   }
 
 });
