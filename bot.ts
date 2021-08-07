@@ -23,15 +23,15 @@ bot.on('ready', () => {
 });
 
 bot.on('messageCreate', (message) => {
-  if (message.content.startsWith('/epigram_enable')) {
-    const { channelId, channel } = message;
+  if (message.content.startsWith('/epigrams_enable')) {
+    const { channelId } = message;
     const stmt = db.prepare("INSERT INTO channels VALUES (?)");
     stmt.run(channelId);
     stmt.finalize();
     message.channel.send('Epigrams enabled for this channel');
     return;
   }
-  if (message.content.startsWith('/epigram_disable')) {
+  if (message.content.startsWith('/epigrams_disable')) {
     const { channelId } = message;
     const stmt = db.prepare("DELETE FROM channels WHERE channel = ?");
     stmt.run(channelId);
@@ -39,9 +39,11 @@ bot.on('messageCreate', (message) => {
     message.channel.send('Epigrams disabled for this channel');
     return;
   }
-  if (message.content.startsWith('/epigram')) {
+
+  if (message.content === '/epigram') {
     message.channel.send(epigrams[Math.floor(Math.random() * epigrams.length)]);
   }
+
 });
 
 function sendOutRandomEpigram() {
