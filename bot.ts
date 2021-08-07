@@ -33,7 +33,9 @@ bot.on('ready', async () => {
 });
 
 bot.on('interactionCreate', async (interaction) => {
+  console.log('new interaction', interaction);
   if (! interaction.isCommand() || ! interaction.channel) {
+    console.log('not command or could not get channel');
     return;
   }
 
