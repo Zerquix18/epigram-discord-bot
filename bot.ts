@@ -20,6 +20,20 @@ const bot = new Discord.Client({
 
 bot.on('ready', () => {
   console.log(`Bot successfully connected as ${bot.user ? bot.user.tag : ''}`);
+  if (bot.application) {
+    bot.application.commands.create({
+      name: 'epigram',
+      description: 'Replies with a random epigram',
+    });
+    bot.application.commands.create({
+      name: 'epigrams_enable',
+      description: 'Enables daily epigrams for the current channel',
+    });
+    bot.application.commands.create({
+      name: 'epigrams_disable',
+      description: 'Disables daily epigrams for the current channel',
+    });
+  }
 });
 
 bot.on('messageCreate', (message) => {
