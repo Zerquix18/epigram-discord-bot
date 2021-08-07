@@ -11,6 +11,12 @@ const db = new sqlite3.Database('./db.sqlite3');
 
 console.log('Bot starting up...');
 
+const commands = [
+  { name: 'epigram', description: 'Replies with a random epigram' },
+  { name: 'epigrams_enable', description: 'Enables daily epigrams for the current channel' },
+  { name: 'epigrams_disable', description: 'Disables daily epigrams for the current channel' },
+];
+
 const bot = new Discord.Client({
   intents: [
     Discord.Intents.FLAGS.GUILDS,
@@ -18,25 +24,15 @@ const bot = new Discord.Client({
   ]
 });
 
-bot.on('ready', () => {
+bot.on('ready', async () => {
   console.log(`Bot successfully connected as ${bot.user ? bot.user.tag : ''}`);
   if (bot.application) {
-    bot.application.commands.create({
-      name: 'epigram',
-      description: 'Replies with a random epigram',
-    });
-    bot.application.commands.create({
-      name: 'epigrams_enable',
-      description: 'Enables daily epigrams for the current channel',
-    });
-    bot.application.commands.create({
-      name: 'epigrams_disable',
-      description: 'Disables daily epigrams for the current channel',
-    });
+    const result = await bot.application.commands.set(commands);
+    console.log('Registered commands', result);
   }
 });
 
-bot.on('messageCreate', (message) => {
+bot.on('messageCreate', async (message) => {
   if (message.content.startsWith('/epigrams_enable')) {
     const { channelId } = message;
     const stmt = db.prepare("INSERT INTO channels VALUES (?)");
